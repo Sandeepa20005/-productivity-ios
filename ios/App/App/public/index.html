@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light-blue">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productivity & Routine Tracker // Bento Grid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Section -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand-logo">
+          <svg class="icon-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">Productivity & Routine Tracker</h1>
+          <p class="brand-subtitle">Enterprise-Grade Bento Workspace & Deep-Work Engine</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle-btn" id="btn-theme-toggle" title="Switch Theme (Light Blue / Dark)">
+          <svg id="theme-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <span id="theme-btn-text">Light Blue</span>
+        </button>
+
+        <div class="status-pill" id="db-status-pill">
+          <span class="pulse-dot"></span>
+          <span class="status-label">SQLite Engine: <strong>Active</strong></span>
+        </div>
+        <div class="clock-display" id="live-clock">
+          <span id="clock-time">00:00:00</span>
+          <span id="clock-date" class="clock-date">Loading date...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Bento Grid Container -->
+    <main class="bento-grid">
+      
+      <!-- Zone 1: Top-Left (Large) - Daily Task Manager -->
+      <section class="bento-card card-tasks" id="zone-tasks">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon icon-tasks">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-title">Daily Task Manager</h2>
+              <span class="card-caption" id="task-counter-caption">0 of 0 tasks completed</span>
+            </div>
+          </div>
+
+          <div class="task-filter-chips">
+            <button class="filter-chip active" data-filter="all" id="filter-all">All</button>
+            <button class="filter-chip" data-filter="pending" id="filter-pending">Pending</button>
+            <button class="filter-chip" data-filter="completed" id="filter-completed">Done</button>
+          </div>
+        </div>
+
+        <form class="task-input-bar" id="task-form">
+          <input 
+            type="text" 
+            id="task-input" 
+            placeholder="Add a new mission (e.g., Upload Moodle live-coding assignment)..." 
+            autocomplete="off"
+            required
+          />
+          <button type="submit" class="btn-add-task" id="btn-add-task" title="Add Task">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add</span>
+          </button>
+        </form>
+
+        <div class="tasks-scroll-container">
+          <ul class="task-list" id="task-list">
+            <!-- Dynamic task items populated by JavaScript -->
+          </ul>
+        </div>
+      </section>
+
+      <!-- Zone 2: Top-Right (Medium) - Focus & Flow Timer -->
+      <section class="bento-card card-timer" id="zone-timer">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon icon-timer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-title">Focus & Flow Timer</h2>
+              <span class="card-caption">Deep Work Pomodoro Engine</span>
+            </div>
+          </div>
+
+          <div class="timer-mode-selector">
+            <button class="mode-btn active" data-mode="pomodoro" data-mins="25">25m Focus</button>
+            <button class="mode-btn" data-mode="shortBreak" data-mins="5">5m Break</button>
+            <button class="mode-btn" data-mode="longBreak" data-mins="15">15m Rest</button>
+          </div>
+        </div>
+
+        <div class="timer-body">
+          <div class="timer-circle-container">
+            <svg class="timer-svg" viewBox="0 0 220 220">
+              <circle class="timer-circle-bg" cx="110" cy="110" r="94"></circle>
+              <circle class="timer-circle-progress" id="timer-progress-ring" cx="110" cy="110" r="94"></circle>
+            </svg>
+            <div class="timer-display-inner">
+              <div class="timer-digits" id="timer-display">25:00</div>
+              <div class="timer-status-text" id="timer-state-label">Ready to Focus</div>
+            </div>
+          </div>
+
+          <div class="session-label-wrapper">
+            <input 
+              type="text" 
+              id="focus-label-input" 
+              class="focus-label-input" 
+              placeholder="Session tag: Python troubleshooting, Video rendering..." 
+              value="Python environment troubleshooting"
+            />
+          </div>
+
+          <div class="timer-controls">
+            <button class="timer-btn btn-primary" id="btn-timer-toggle">
+              <svg id="timer-toggle-icon" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span id="timer-toggle-text">Start Focus</span>
+            </button>
+            <button class="timer-btn btn-secondary" id="btn-timer-reset" title="Reset Session">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M3 2v6h6"></path>
+                <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                <path d="M21 22v-6h-6"></path>
+                <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+              </svg>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Zone 3: Bottom-Wide (Span 2) - Routine & Habit Tracker -->
+      <section class="bento-card card-habits" id="zone-habits">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon icon-habits">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-title">Routine & Habit Tracker</h2>
+              <span class="card-caption">7-Day Historical Matrix & Consecutive Streaks</span>
+            </div>
+          </div>
+
+          <button class="btn-sm-action" id="btn-open-habit-modal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>New Habit</span>
+          </button>
+        </div>
+
+        <form class="habit-quick-add-form hidden" id="habit-form">
+          <input type="text" id="habit-name-input" placeholder="New habit name (e.g. Recreational cricket, Morning run)..." required>
+          <button type="submit" class="btn-primary-sm">Create</button>
+          <button type="button" class="btn-secondary-sm" id="btn-cancel-habit">Cancel</button>
+        </form>
+
+        <div class="habits-table-container">
+          <div class="habits-header-row">
+            <div class="col-habit-name">Habit Name</div>
+            <div class="col-habit-streak">Streak</div>
+            <div class="col-habit-matrix" id="matrix-day-labels">
+              <!-- Dynamically populated day labels (e.g. M, T, W, T, F, S, S) -->
+            </div>
+            <div class="col-habit-actions">Action</div>
+          </div>
+
+          <div class="habits-list" id="habits-list">
+            <!-- Dynamic habit rows populated by JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Zone 4: Middle-Right (Small) - Analytics & Progress -->
+      <section class="bento-card card-analytics" id="zone-analytics">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon icon-analytics">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-title">Analytics & Flow</h2>
+              <span class="card-caption">Daily Completion Gauge</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="analytics-content">
+          <div class="radial-progress-wrapper">
+            <svg class="progress-radial-svg" viewBox="0 0 160 160">
+              <circle class="progress-radial-bg" cx="80" cy="80" r="66"></circle>
+              <circle class="progress-radial-bar" id="analytics-radial-bar" cx="80" cy="80" r="66"></circle>
+            </svg>
+            <div class="radial-text-inner">
+              <span class="radial-percent" id="analytics-percent">0%</span>
+              <span class="radial-sublabel" id="analytics-fraction">0 / 0</span>
+            </div>
+          </div>
+
+          <div class="analytics-metrics-stack">
+            <div class="metric-box">
+              <div class="metric-label">Focus Time Logged</div>
+              <div class="metric-value highlight-amber">
+                <span id="stat-focus-hours">1.2</span> <small>hrs</small>
+              </div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">Execution Velocity</div>
+              <div class="metric-value highlight-emerald" id="stat-velocity-badge">Optimal</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Zone 5: Bottom-Right (Small) - Scratchpad -->
+      <section class="bento-card card-scratchpad" id="zone-scratchpad">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-icon icon-scratchpad">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-title">Scratchpad</h2>
+              <span class="card-caption">Auto-saving SQLite Buffer</span>
+            </div>
+          </div>
+
+          <div class="scratchpad-actions">
+            <button class="icon-btn-action" id="btn-copy-scratchpad" title="Copy to Clipboard">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+            <button class="icon-btn-action" id="btn-clear-scratchpad" title="Clear Buffer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="scratchpad-editor-wrapper">
+          <textarea 
+            id="scratchpad-textarea" 
+            placeholder="Type notes, code snippets, reference URLs, or LaTeX formulations here..."
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="scratchpad-footer">
+          <div class="scratchpad-status" id="scratchpad-status">
+            <span class="status-indicator"></span>
+            <span id="scratchpad-status-text">Synced with SQLite</span>
+          </div>
+          <div class="scratchpad-counter" id="scratchpad-counter">0 chars • 0 words</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
