@@ -1,0 +1,54 @@
+name: Build iOS IPA
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-ipa:
+    runs-on: macos-14
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Project Dependencies
+        run: |
+          npm ci || npm install
+
+      - name: Sync Capacitor iOS Project
+        run: |
+          node -e "const fs = require('fs'); fs.mkdirSync('www', { recursive: true }); ['index.html', 'styles.css', 'app.js'].forEach(f => fs.copyFileSync(f, 'www/' + f));"
+          npx cap sync ios
+
+      - name: Build Xcode Archive (Unsigned)
+        run: |
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath ../../App.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            archive
+
+      - name: Package .ipa File
+        run: |
+          mkdir Payload
+          cp -r App.xcarchive/Products/Applications/App.app Payload/
+          zip -r ProductivityTracker.ipa Payload
+
+      - name: Upload .ipa Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ProductivityTracker-iOS-IPA
+          path: ProductivityTracker.ipa
+          retention-days: 14

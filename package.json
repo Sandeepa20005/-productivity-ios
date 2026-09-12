@@ -1,0 +1,26 @@
+{
+  "name": "productivity-routine-tracker",
+  "version": "1.0.0",
+  "description": "Personal Productivity & Routine Tracker - Bento Grid Desktop Application",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js",
+    "electron": "electron .",
+    "test:db": "node -e \"const db = require('./database.js'); console.log(db.getInitialData());\""
+  },
+  "keywords": [
+    "productivity",
+    "tracker",
+    "bento-grid",
+    "electron",
+    "sqlite",
+    "pomodoro"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/cli": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2"
+  }
+}
