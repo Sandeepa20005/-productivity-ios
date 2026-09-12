@@ -26,10 +26,9 @@ jobs:
         run: |
           npm install
 
-      - name: Prepare Web Assets & Sync
+      - name: Prepare Mobile Web Assets
         run: |
-          node -e "const fs = require('fs'); fs.mkdirSync('www', { recursive: true }); ['index.html', 'styles.css', 'app.js'].forEach(f => fs.copyFileSync(f, 'www/' + f));"
-          npx cap copy ios
+          node build-mobile.js
 
       - name: Build Xcode Archive (Unsigned)
         run: |
